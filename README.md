@@ -41,3 +41,36 @@ object Address : CollectionMetaModel(name = "Адрес", businessPackage = Dict
     val postCode = string(code = "postCode", name = "Индекс", length = 6)
 }
 ```
+
+### Сущность с коллекциями адресов и контактов
+
+```kotlin
+object Counterparty : MetaModel(name = "Контрагент", businessPackage = Dictionary) {
+    val type = string(code = "type", name = "Тип", length = 100)
+    val inn = string(code = "inn", name = "ИНН/TIN", length = 36)
+    val kpp = string(code = "kpp", name = "КПП", length = 9)
+    val name = string(code = "name", name = "Наименование", length = 160)
+    val category = string(code = "category", name = "Группа", length = 100)
+    val fullName = string(code = "fullName", name = "Полное наименование", length = 1000)
+    val internationalName = string(code = "internationalName", name = "Интернациональное наименование", length = 160)
+    val residency = string(code = "residency", name = "Резидентство", length = 100)
+    val country = (long(code = "country", name = "Юрисдикции/гражданство") references Country.id)
+    val addresses = (long(code = "addresses", name = "Адреса") collection Address.collectionId)
+    val code = string(code = "code", name = "Код контрагента", length = 30)
+}
+```
+
+### Сущность с иерархией экземпляров
+
+```kotlin
+object BusinessUnit : TreeMetaModel(name = "Business units", businessPackage = Dictionary) {
+    val code = string(code = "code", length = 30).required()
+    val name = string(code = "name", length = 160).required()
+    val startDt = date(code = "startDt", name = "Start date").required()
+    val endDt = date(code = "endDt", name = "End date")
+    val reportName = string(code = "reportName", name = "Наименование для отчетов", length = 160)
+    val counterparty = (long(code = "counterparty", name = "Контрагент") references Counterparty.id)
+}
+```
+
+
