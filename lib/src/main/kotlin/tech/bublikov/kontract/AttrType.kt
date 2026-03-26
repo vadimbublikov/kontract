@@ -1,9 +1,5 @@
 package tech.bublikov.kontract
 
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-
 
 interface IAttrType {
     fun nullable(): Boolean = true
@@ -13,7 +9,7 @@ interface IAttrType {
     fun postgresType(): String
 }
 
-class BooleanAttrType: IAttrType {
+class BooleanAttrType : IAttrType {
     override fun kotlinType(): String = "Boolean"
     override fun jsType(): String = "boolean"
     override fun postgresType(): String = "boolean"
