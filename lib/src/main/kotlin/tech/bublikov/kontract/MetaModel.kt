@@ -1,24 +1,26 @@
 package tech.bublikov.kontract
 
-interface IBusinessPackage {
-    val code: String
-    val name: String
+abstract class Group {
+    abstract val code: String
+    abstract val desc: String
 }
 
 open class MetaModel(
-    val businessPackage: IBusinessPackage,
-    val name: String = "",
+    val group: Group,
+    name: String = "",
     val modulePrefix: Boolean = false,
     val audit: Boolean = true,
     val transitional: Boolean = false,
 ) {
+    val mcode = javaClass.name
+    val mname = name
 
     val attrs = mutableListOf<Attr>()
 
     val id: Attr = registerAttr("id", "ID", LongAttrType())
 
-    fun string(code: String, name: String): Attr =
-        registerAttr(code, name, type = StringAttrType())
+    fun string(code: String, name: String, length: Int): Attr =
+        registerAttr(code, name, type = StringAttrType(attrLength=length))
 
     fun long(code: String, name: String): Attr =
         registerAttr(code, name, LongAttrType())
