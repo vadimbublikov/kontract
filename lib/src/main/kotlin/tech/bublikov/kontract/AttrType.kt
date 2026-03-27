@@ -2,7 +2,6 @@ package tech.bublikov.kontract
 
 
 interface IAttrType {
-    fun nullable(): Boolean = true
     fun kotlinType(): String
     fun kotlinImport(): String = ""
     fun jsType(): String
@@ -77,7 +76,6 @@ class StringAttrType(
 }
 
 class LocalDateAttrType : IAttrType {
-
     companion object {
         internal val INSTANCE = LocalDateAttrType()
     }
@@ -89,11 +87,6 @@ class LocalDateAttrType : IAttrType {
 }
 
 class LocalDateTimeAttrType : IAttrType {
-
-    companion object {
-        internal val INSTANCE = LocalDateTimeAttrType()
-    }
-
     override fun kotlinType(): String = "LocalDateTime"
     override fun jsType(): String = "dateTime"
     override fun postgresType(): String = "timestamp without time zone"

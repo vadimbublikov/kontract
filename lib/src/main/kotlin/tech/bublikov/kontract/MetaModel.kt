@@ -1,14 +1,15 @@
 package tech.bublikov.kontract
 
-abstract class Group {
+interface SubDomain
+
+abstract class Package {
     abstract val code: String
-    abstract val desc: String
+    abstract val name: String
 }
 
 open class MetaModel(
-    val group: Group,
+    val pckg: Package,
     name: String = "",
-    val modulePrefix: Boolean = false,
     val audit: Boolean = true,
     val transitional: Boolean = false,
 ) {
@@ -41,7 +42,7 @@ open class MetaModel(
         registerAttr(code, name, LocalDateTimeAttrType())
 
     fun registerAttr(code: String, name: String, type: IAttrType): Attr {
-        return Attr(/*metaModel = this,*/ code = code, name = name, attrType = type).also {
+        return Attr(metaModel = this, code = code, name = name, attrType = type).also {
             attrs.addAttr(it)
         }
     }
@@ -64,6 +65,15 @@ open class MetaModel(
         attrs[index] = newAttr
         return newAttr
     }
+
+    infix fun Attr.references(ref: Attr): Attr = apply {
+        if ("id" == ref.code) {
+            val newAttr = this.copy(referenceTarget = ref)
+            replaceAttr(this, newAttr)
+            return newAttr
+        }
+    }
+
 }
 
 class DuplicateAttrException(attrName: String, metaModelName: String) :

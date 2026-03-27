@@ -25,6 +25,8 @@ dependencies {
 
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation(libs.guava)
+
+    testImplementation("org.assertj:assertj-core:3.27.7")
 }
 
 testing {
